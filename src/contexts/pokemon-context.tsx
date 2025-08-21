@@ -26,6 +26,8 @@ type PokemonAction =
   | { type: 'APPEND_POKEMON_LIST'; payload: Pokemon[] } // For infinite scroll
   | { type: 'ADD_TO_CACHE'; payload: { key: string; pokemon: Pokemon } }
   | { type: 'ADD_TO_PAGE_CACHE'; payload: { key: string; pokemon: Pokemon[] } }
+  | { type: 'SET_CACHE'; payload: Record<string, Pokemon> }
+  | { type: 'SET_PAGE_CACHE'; payload: Record<string, Pokemon[]> }
   | { type: 'SET_FAVORITES'; payload: Pokemon[] }
   | { type: 'TOGGLE_FAVORITE'; payload: Pokemon }
   | { type: 'SET_FILTERS'; payload: PokemonFilters }
@@ -72,6 +74,16 @@ function pokemonReducer(state: PokemonState, action: PokemonAction): PokemonStat
       return {
         ...state,
         pageCache: { ...state.pageCache, [action.payload.key]: action.payload.pokemon }
+      };
+    case 'SET_CACHE':
+      return {
+        ...state,
+        cache: action.payload
+      };
+    case 'SET_PAGE_CACHE':
+      return {
+        ...state,
+        pageCache: action.payload
       };
     case 'SET_FAVORITES':
       return { ...state, favorites: action.payload };
@@ -243,13 +255,9 @@ export function PokemonProvider({ children }: { children: React.ReactNode }) {
 
   const clearCache = () => {
     dispatch({ type: 'SET_POKEMON_LIST', payload: [] });
-    // Reset cache by dispatching actions to clear them
-    Object.keys(state.cache).forEach(key => {
-      dispatch({ type: 'ADD_TO_CACHE', payload: { key, pokemon: null as any } });
-    });
-    Object.keys(state.pageCache).forEach(key => {
-      dispatch({ type: 'ADD_TO_PAGE_CACHE', payload: { key, pokemon: [] } });
-    });
+    // Reset cache by setting empty objects
+    dispatch({ type: 'SET_CACHE', payload: {} });
+    dispatch({ type: 'SET_PAGE_CACHE', payload: {} });
   };
 
   const getCacheStats = () => {

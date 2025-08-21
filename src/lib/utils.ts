@@ -7,15 +7,25 @@ export function cn(...inputs: ClassValue[]) {
 
 export function sortPokemon(pokemon: Pokemon[], sortConfig: SortConfig): Pokemon[] {
   return [...pokemon].sort((a, b) => {
-    let aValue: any;
-    let bValue: any;
+    let aValue: string | number;
+    let bValue: string | number;
 
     if (sortConfig.field === 'name') {
       aValue = a.name;
       bValue = b.name;
+    } else if (sortConfig.field === 'id') {
+      aValue = a.id;
+      bValue = b.id;
+    } else if (sortConfig.field === 'height') {
+      aValue = a.height;
+      bValue = b.height;
+    } else if (sortConfig.field === 'weight') {
+      aValue = a.weight;
+      bValue = b.weight;
     } else {
-      aValue = a[sortConfig.field as keyof Pokemon];
-      bValue = b[sortConfig.field as keyof Pokemon];
+      // Default to name if field is not recognized
+      aValue = a.name;
+      bValue = b.name;
     }
     
     if (typeof aValue === 'string' && typeof bValue === 'string') {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, forwardRef } from 'react';
+import { useEffect, useMemo, forwardRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Pokemon } from '@/types/api';

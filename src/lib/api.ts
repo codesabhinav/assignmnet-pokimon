@@ -76,6 +76,6 @@ export const pokemonApi = {
 
   async getPokemonTypes(): Promise<string[]> {
     const response = await apiClient.get('/type');
-    return response.data.results.map((type: any) => type.name);
+    return response.data.results.map((type: { name: string }) => type.name);
   },
 };

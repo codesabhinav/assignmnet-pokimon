@@ -1,19 +1,18 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { usePokemon } from '@/contexts/pokemon-context';
-import { useTheme } from '@/contexts/theme-context';
 import { sortPokemon } from '@/lib/utils';
 import { SearchFilters } from '@/components/search-filters';
 import { PokemonCard } from '@/components/pokemon-card';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
+import { PokemonFilters } from '@/types/api';
 
 function ResourceExplorer() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const { state, fetchPokemonList, toggleFavorite, setFilters, setSort, setPage, getCachedPage, getCacheStats, loadNextPage, preloadAdjacentPages, clearPokemonList } = usePokemon();
+  const { state, fetchPokemonList, setFilters, setSort, setPage, getCacheStats, loadNextPage, clearPokemonList } = usePokemon();
   const [showFavorites, setShowFavorites] = useState(false);
   const [showCacheStats, setShowCacheStats] = useState(false);
 
@@ -76,7 +75,7 @@ function ResourceExplorer() {
     const sort = searchParams.get('sort');
     
     // Set filters from URL
-    const filters: any = {};
+    const filters: PokemonFilters = {};
     if (name) filters.name = name;
     if (type) filters.type = type;
     if (minHeight) filters.minHeight = parseInt(minHeight);
@@ -91,14 +90,14 @@ function ResourceExplorer() {
     // Set sort from URL
     if (sort) {
       const [field, direction] = sort.split('-');
-      setSort({ field: field as any, direction: direction as 'asc' | 'desc' });
+      setSort({ field: field as 'name' | 'id' | 'height' | 'weight', direction: direction as 'asc' | 'desc' });
     }
     
     // Set page from URL
     if (page) {
       setPage(parseInt(page));
     }
-  }, []); // Only run on mount
+  }, [searchParams, setFilters, setSort, setPage]); // Added missing dependencies
 
   // Load initial data on mount only
   useEffect(() => {
@@ -106,7 +105,7 @@ function ResourceExplorer() {
       console.log('🚀 Loading initial data');
       fetchPokemonList(1, state.filters, false);
     }
-  }, []); // Only run on mount
+  }, [fetchPokemonList, state.filters, state.loading, state.pokemonList.length]); // Added missing dependencies
 
   const sortedPokemon = sortPokemon(state.pokemonList, state.sortConfig);
   const displayPokemon = showFavorites ? state.favorites : sortedPokemon;
@@ -209,7 +208,7 @@ function ResourceExplorer() {
                 value={`${state.sortConfig.field}-${state.sortConfig.direction}`}
                 onChange={(e) => {
                   const [field, direction] = e.target.value.split('-') as [string, 'asc' | 'desc'];
-                  setSort({ field: field as any, direction });
+                  setSort({ field: field as 'name' | 'id' | 'height' | 'weight', direction });
                 }}
                 className="input-field text-sm"
               >
@@ -397,7 +396,7 @@ function ResourceExplorer() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               <span className="text-gray-700 dark:text-gray-300 font-medium">
-                You've seen all {state.totalCount} Resources! 🎉
+                You&apos;ve seen all {state.totalCount} Resources! 🎉
               </span>
             </div>
           </div>

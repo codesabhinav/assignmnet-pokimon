@@ -4,15 +4,13 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
 import { usePokemon } from '@/contexts/pokemon-context';
-import { useTheme } from '@/contexts/theme-context';
-import { getTypeColor, formatPokemonId, capitalizeFirst, getStatColor, cn } from '@/lib/utils';
+import { formatPokemonId, capitalizeFirst, getStatColor, cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { imageCache } from '@/lib/image-cache';
 
 export default function PokemonDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const { theme } = useTheme();
   const { state, fetchPokemonDetail, toggleFavorite, getCachedPokemon } = usePokemon();
   
   const pokemonId = parseInt(params.id as string);
@@ -41,7 +39,7 @@ export default function PokemonDetailPage() {
     };
 
     loadPokemon();
-  }, [pokemonId, pokemon]); // Removed fetchPokemonDetail from dependencies
+  }, [pokemonId, pokemon, fetchPokemonDetail]); // Added missing dependency
 
   if (state.loading && !pokemon) {
     return (

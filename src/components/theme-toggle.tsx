@@ -4,7 +4,7 @@ import { useTheme } from '@/contexts/theme-context';
 import { cn } from '@/lib/utils';
 
 export function ThemeToggle() {
-  const { theme, setTheme, isDark } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="relative inline-flex items-center bg-glass rounded-xl p-1 shadow-lg">

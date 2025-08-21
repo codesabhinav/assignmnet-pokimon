@@ -101,7 +101,7 @@ export function SearchFilters({ onFiltersChange, initialFilters, onClearFilters,
     }, 800);
 
     return () => clearTimeout(timeoutId);
-  }, [filters.name, onFiltersChange, onApplyFilters, initialFilters.name]);
+  }, [filters.name, onFiltersChange, onApplyFilters, initialFilters.name, filters]);
 
   const handleFilterChange = (key: keyof PokemonFilters, value: string) => {
     // Normalize the value - trim whitespace and handle empty strings
