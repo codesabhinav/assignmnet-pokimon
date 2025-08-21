@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-inter: 'Inter', sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    @apply bg-gray-50 text-gray-900 transition-colors duration-200;
+  }
+  
+  .dark body {
+    @apply bg-dark-900 text-gray-100;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-lg hover:from-primary-600 hover:to-secondary-600 transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 dark:bg-dark-800/80 dark:border-dark-600 dark:text-gray-200 dark:hover:bg-dark-700;
+  }
+  
+  .card {
+    @apply bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] dark:bg-dark-800 dark:border-dark-600 dark:hover:shadow-dark-2xl;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 dark:bg-dark-800/80 dark:border-dark-600 dark:text-gray-100 dark:placeholder-gray-400;
+  }
+  
+  .bg-glass {
+    @apply bg-white/80 backdrop-blur-sm border border-white/20 dark:bg-dark-800/80 dark:border-dark-600/20;
+  }
+  
+  .bg-gradient-primary {
+    @apply bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-dark-800 dark:via-dark-900 dark:to-dark-800;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 via-secondary-600 to-pink-600 bg-clip-text text-transparent;
+  }
+  
+  .shadow-dark-2xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  }
+}
+
+@layer utilities {
+  .animate-delay-150 {
+    animation-delay: 150ms;
+  }
+  
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+  
+  .animate-delay-500 {
+    animation-delay: 500ms;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
